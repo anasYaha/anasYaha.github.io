@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anas Yahyaoui — Systems &amp; Automation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#0B0C0F;
+    --paper-2:#15171C;
+    --ink:#ECEDE8;
+    --ink-soft:#9CA1A8;
+    --line:#2A2D33;
+    --copper:#D9A755;
+    --teal:#6E8FA6;
+    --focus:#ECEDE8;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  :root[data-theme="light"]{
+    --paper:#F1F1EC;--paper-2:#E4E4DC;--ink:#1B2436;--ink-soft:#4C5568;--line:#A9ABA0;--copper:#8C6A2E;--teal:#33475F;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',system-ui,sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 28px;}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;}
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none;transition:none;}}
+
+  /* nav */
+  header.nav{
+    position:sticky;top:0;top:env(safe-area-inset-top,0px);
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    z-index:10;
+  }
+  .nav-inner{max-width:920px;margin:0 auto;padding:16px 28px;display:flex;justify-content:space-between;align-items:center;}
+  .nav-inner .brand{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.02rem;letter-spacing:0.01em;}
+  .nav-inner .brand span{color:var(--copper);}
+  .nav-links{display:flex;gap:22px;font-size:0.92rem;}
+  .nav-links a{text-decoration:none;color:var(--ink-soft);border-bottom:1px solid transparent;transition:border-color .15s,color .15s;}
+  .nav-links a:hover,.nav-links a:focus-visible{color:var(--ink);border-color:var(--copper);}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--copper);outline-offset:3px;}
+
+  /* hero */
+  .hero{padding:76px 0 56px;border-bottom:1px solid var(--line);position:relative;overflow:hidden;}
+  .hero::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:0.14;
+    animation:pulse 6s ease-in-out infinite;
+    pointer-events:none;
+  }
+  .hero::after{
+    content:"";position:absolute;top:-220px;left:50%;transform:translateX(-50%);
+    width:640px;height:420px;border-radius:50%;
+    background:radial-gradient(closest-side, color-mix(in srgb, var(--copper) 22%, transparent), transparent);
+    pointer-events:none;
+  }
+  @keyframes pulse{0%,100%{opacity:0.14;}50%{opacity:0.05;}}
+  @media (prefers-reduced-motion: reduce){.hero::before{animation:none;}}
+  .hero-inner{position:relative;animation:rise .7s ease-out;}
+  @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion: reduce){.hero-inner{animation:none;}}
+  .eyebrow{font-size:0.82rem;color:var(--teal);margin-bottom:14px;}
+  h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:clamp(2.3rem,6vw,3.4rem);
+    line-height:1.06;
+    letter-spacing:-0.01em;
+    max-width:11ch;
+    text-shadow:0 0 34px color-mix(in srgb, var(--copper) 30%, transparent);
+  }
+  .role{font-size:1.05rem;color:var(--ink-soft);margin-top:16px;max-width:52ch;}
+  .status{
+    margin-top:36px;
+    border:1px solid var(--line);
+    background:var(--paper-2);
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  }
+  .status div{padding:14px 18px;border-right:1px solid var(--line);}
+  .status div:last-child{border-right:none;}
+  .status .k{font-size:0.72rem;color:var(--ink-soft);}
+  .status .v{font-size:0.88rem;margin-top:4px;}
+
+  section{padding:52px 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  h2{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.5rem;margin-bottom:20px;}
+  .lede{color:var(--ink-soft);max-width:62ch;}
+
+  /* projects */
+  .projects{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid var(--line);margin-top:24px;}
+  .proj{
+    display:grid;grid-template-columns:1fr auto;gap:6px 18px;
+    padding:20px 0;border-bottom:1px solid var(--line);align-items:baseline;
+    transition:padding-left .25s ease, border-color .25s ease;
+  }
+  .proj:hover{padding-left:10px;border-color:color-mix(in srgb, var(--copper) 50%, var(--line));}
+  .proj-name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.08rem;}
+  .proj-name a{text-decoration:none;border-bottom:1px solid var(--copper);}
+  .proj-desc{grid-column:1/2;color:var(--ink-soft);font-size:0.94rem;max-width:58ch;}
+  .proj-meta{grid-column:2/3;text-align:right;font-size:0.8rem;color:var(--teal);white-space:nowrap;}
+
+  /* experience & education */
+  .timeline{border-top:1px solid var(--line);margin-top:24px;}
+  .entry{padding:22px 0;border-bottom:1px solid var(--line);transition:padding-left .25s ease, border-color .25s ease;}
+  .entry:hover{padding-left:10px;border-color:color-mix(in srgb, var(--copper) 50%, var(--line));}
+  .entry-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;align-items:baseline;}
+  .entry-role{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.05rem;}
+  .entry-org{color:var(--teal);font-size:0.92rem;}
+  .entry-date{font-size:0.8rem;color:var(--ink-soft);white-space:nowrap;}
+  .entry-place{font-size:0.8rem;color:var(--ink-soft);margin-top:2px;}
+  .entry ul{margin:10px 0 0 1.1em;color:var(--ink-soft);font-size:0.92rem;}
+  .entry li{margin-bottom:4px;}
+
+  /* stack */
+  .stack-group{margin-bottom:22px;}
+  .stack-group h3{font-size:0.85rem;color:var(--ink-soft);font-weight:500;margin-bottom:10px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    border:1px solid var(--line);padding:5px 11px;font-size:0.82rem;
+    color:var(--ink);background:var(--paper-2);transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .chip:hover{border-color:var(--copper);box-shadow:0 0 14px color-mix(in srgb, var(--copper) 25%, transparent);}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:20px;}
+  .stat{background:var(--paper);padding:20px;}
+  .stat .num{font-family:'Space Grotesk',sans-serif;font-size:1.9rem;font-weight:700;color:var(--copper);}
+  .stat .lbl{font-size:0.8rem;color:var(--ink-soft);margin-top:4px;}
+
+  /* contact */
+  .contact-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:20px;}
+  .btn{
+    display:inline-block;border:1px solid var(--ink);padding:11px 20px;
+    text-decoration:none;font-size:0.92rem;color:var(--ink);
+    transition:background .15s,color .15s;
+  }
+  .btn.primary{background:var(--ink);color:var(--paper);}
+  .btn:hover{background:var(--copper);border-color:var(--copper);color:#0B0C0F;box-shadow:0 0 22px color-mix(in srgb, var(--copper) 45%, transparent);}
+
+  footer{padding:28px 0 48px;font-size:0.8rem;color:var(--ink-soft);}
+
+  @media (max-width:560px){
+    .nav-links{gap:14px;font-size:0.85rem;}
+    .proj{grid-template-columns:1fr;}
+    .proj-meta{text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">anas<span>Yaha</span></div>
+    <nav class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#stack">Skills</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div class="eyebrow mono">anasyahyaoui111@gmail.com</div>
+    <h1>Anas Yahyaoui</h1>
+    <p class="role">IT engineering student specializing in Data Science, Data Analytics &amp; Telecommunications, with a focus on AI, machine learning, and computer vision.</p>
+    <div class="status mono">
+      <div><div class="k">currently</div><div class="v">ML Intern, FlyRank AI</div></div>
+      <div><div class="k">studying</div><div class="v">5th-yr Software Eng., ESPRIT</div></div>
+      <div><div class="k">seeking</div><div class="v">6-mo internship, Jan 2027</div></div>
+      <div><div class="k">based in</div><div class="v">Le Bardo, Tunis</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="reveal">
+  <div class="wrap">
+    <h2>About</h2>
+    <p class="lede">5th-year software engineering student specializing in Data Science, Data Analytics &amp; Telecommunications, with a strong interest in artificial intelligence and machine learning. I built a real-time face detection &amp; recognition system in Python and OpenCV, pairing a custom GUI with core ML concepts in a complete working application. Methodical, a team player, and comfortable running projects independently, I bring varied professional experience across full-stack development, banking IT support, and applied machine learning. I'm currently looking for a six-month internship in Data Science or Machine Learning starting January 2027.</p>
+  </div>
+</section>
+
+<section id="experience" class="reveal">
+  <div class="wrap">
+    <h2>Experience</h2>
+    <div class="timeline">
+      <div class="entry">
+        <div class="entry-head">
+          <div class="entry-role">Machine Learning Intern</div>
+          <div class="entry-date mono">Jun 2026 – Present</div>
+        </div>
+        <div class="entry-org">FlyRank AI</div>
+        <div class="entry-place">Tunis, Tunisia</div>
+        <ul>
+          <li>Contributing to the development of applied AI applications, with a focus on machine learning.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <div class="entry-role">Swimming Coach</div>
+          <div class="entry-date mono">Jan 2026 – Jun 2026</div>
+        </div>
+        <div class="entry-org">L'Aquarium (swim club)</div>
+        <div class="entry-place">Tunis, Tunisia</div>
+        <ul>
+          <li>Coached youth swimmers, certified under the BF1 diploma from the Tunisian Swimming Federation.</li>
+          <li>Planned and led training sessions and tracked athlete progress, including support at local competitions.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <div class="entry-role">Full Stack Developer Intern</div>
+          <div class="entry-date mono">Jul – Aug 2025</div>
+        </div>
+        <div class="entry-org">Axess Logistique</div>
+        <div class="entry-place">Tunis, Tunisia</div>
+        <ul>
+          <li>Optimized and migrated a logistics management platform built with Symfony 5.4.</li>
+          <li>Fixed and synchronized complex database migrations and entity relationships.</li>
+          <li>Migrated front-end components from Twig to React (Vite + Tailwind CSS).</li>
+          <li>Built secure, role-based APIs with JWT authentication and advanced filtering via Doctrine.</li>
+          <li>Designed reusable UI components and connected front end to back end with Axios.</li>
+        </ul>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <div class="entry-role">IT Intern</div>
+          <div class="entry-date mono">Jul – Aug 2023</div>
+        </div>
+        <div class="entry-org">STB Bank (Société Tunisienne de Banque)</div>
+        <div class="entry-place">Tunis, Tunisia</div>
+        <ul>
+          <li>Provided IT support in a banking environment, keeping daily operations running smoothly.</li>
+          <li>Diagnosed and resolved hardware faults across motherboards, RAM, CPUs, drives, power supplies, and GPUs.</li>
+          <li>Installed, configured, and maintained Windows systems (7, 8, 10) and troubleshot crashes, slowdowns, and boot errors.</li>
+          <li>Gained exposure to IT security practices in a financial-sector environment.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="reveal">
+  <div class="wrap">
+    <h2>Projects</h2>
+    <p class="lede">A mix of applied ML, computer vision, and app work pulled from recent repositories.</p>
+    <div class="projects">
+      <div class="proj">
+        <div class="proj-name"><a href="https://github.com/ahmed-karray/Esprit-PI-4DATA-2026-6G-SmartCity-IDS" target="_blank" rel="noopener">6G Smart City IDS</a></div>
+        <div class="proj-meta">Jupyter Notebook · PI project, 2025–26</div>
+        <div class="proj-desc">Final-year engineering project at Esprit — an intrusion detection system for 6G smart-city networks, applying machine learning across mMTC and URLLC traffic.</div>
+      </div>
+      <div class="proj">
+        <div class="proj-name"><a href="https://github.com/anasYaha/face-detection-opencv" target="_blank" rel="noopener">face-detection-opencv</a></div>
+        <div class="proj-meta">Python · flagship personal project</div>
+        <div class="proj-desc">A complete real-time face detection &amp; recognition system built in Python and OpenCV: Haar Cascade detection, LBPH recognition, multi-user enrollment, and a custom Tkinter GUI — combining core machine-learning concepts into one working application.</div>
+      </div>
+      <div class="proj">
+        <div class="proj-name"><a href="https://github.com/anasYaha/GymXp" target="_blank" rel="noopener">GymXp</a></div>
+        <div class="proj-meta">TypeScript</div>
+        <div class="proj-desc">An application project built in TypeScript.</div>
+      </div>
+      <div class="proj">
+        <div class="proj-name"><a href="https://github.com/anasYaha/application-c-t-client" target="_blank" rel="noopener">application-c-t-client</a></div>
+        <div class="proj-meta">TypeScript</div>
+        <div class="proj-desc">A client-side application built in TypeScript.</div>
+      </div>
+      <div class="proj">
+        <div class="proj-name"><a href="https://github.com/WorKenX306/DevOps" target="_blank" rel="noopener">DevOps</a></div>
+        <div class="proj-meta">Java</div>
+        <div class="proj-desc">Collaborative DevOps-focused project written in Java.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stack" class="reveal">
+  <div class="wrap">
+    <h2>Skills</h2>
+    <div class="stack-group">
+      <h3>Languages &amp; ML</h3>
+      <div class="chips">
+        <span class="chip">Python</span><span class="chip">Java</span>
+        <span class="chip">Computer vision (OpenCV)</span><span class="chip">Data wrangling</span>
+      </div>
+    </div>
+    <div class="stack-group">
+      <h3>Web &amp; APIs</h3>
+      <div class="chips">
+        <span class="chip">Symfony</span><span class="chip">PHP</span><span class="chip">MySQL</span>
+        <span class="chip">Doctrine</span><span class="chip">React</span><span class="chip">Vite</span>
+        <span class="chip">Tailwind CSS</span><span class="chip">JWT</span>
+      </div>
+    </div>
+    <div class="stack-group">
+      <h3>Systems &amp; infrastructure</h3>
+      <div class="chips">
+        <span class="chip">Linux administration</span><span class="chip">Computer networking</span>
+        <span class="chip">Git</span><span class="chip">Hardware diagnostics</span>
+      </div>
+    </div>
+    <div class="stack-group">
+      <h3>Certifications</h3>
+      <div class="chips">
+        <span class="chip">AI Fluency for Students</span><span class="chip">AI Fluency: Framework &amp; Foundations</span>
+        <span class="chip">Claude 101</span><span class="chip">Responsive Web Design</span>
+        <span class="chip">BF1 — Swimming Coach</span>
+      </div>
+    </div>
+    <div class="stack-group">
+      <h3>Soft skills</h3>
+      <div class="chips">
+        <span class="chip">Team spirit</span><span class="chip">Analytical mindset</span>
+        <span class="chip">Methodical</span><span class="chip">Communication</span>
+      </div>
+    </div>
+    <div class="stack-group">
+      <h3>Languages spoken</h3>
+      <div class="chips">
+        <span class="chip">Arabic — native</span><span class="chip">French — B2</span><span class="chip">English — B2</span>
+      </div>
+    </div>
+    <div class="stack-group">
+      <h3>Interests</h3>
+      <div class="chips">
+        <span class="chip">AI &amp; computer vision</span><span class="chip">Cybersecurity</span>
+        <span class="chip">Swimming — competitor (14 yrs) &amp; coach (2 yrs)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education" class="reveal">
+  <div class="wrap">
+    <h2>Education</h2>
+    <div class="timeline">
+      <div class="entry">
+        <div class="entry-head">
+          <div class="entry-role">Baccalauréat, option internationale — Information Technologies</div>
+          <div class="entry-date mono">Sep 2022 – Jun 2027</div>
+        </div>
+        <div class="entry-org">ESPRIT — École Supérieure Privée d'Ingénierie et de Technologies</div>
+        <div class="entry-place">Software engineering, specializing in Data Science, Data Analytics &amp; Telecommunications</div>
+      </div>
+      <div class="entry">
+        <div class="entry-head">
+          <div class="entry-role">Baccalauréat Informatique — Mention Bien</div>
+          <div class="entry-date mono">2022</div>
+        </div>
+        <div class="entry-org">Lycée Mahmoud El Messaidi</div>
+        <div class="entry-place">Le Bardo, Tunisia</div>
+      </div>
+    </div>
+    <div class="stats mono">
+      <div class="stat"><div class="num">10</div><div class="lbl">public repositories</div></div>
+      <div class="stat"><div class="num">2</div><div class="lbl">stars earned</div></div>
+      <div class="stat"><div class="num">4</div><div class="lbl">internships &amp; roles</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="reveal">
+  <div class="wrap">
+    <h2>Get in touch</h2>
+    <p class="lede">Looking for a six-month internship in Data Science or Machine Learning starting January 2027 — reach out for opportunities or collaboration.</p>
+    <div class="contact-row">
+      <a class="btn primary" href="mailto:anasyahyaoui111@gmail.com">Email me</a>
+      <a class="btn" href="https://www.linkedin.com/in/anasyahyaoui" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="https://github.com/anasYaha" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Based on Anas Yahyaoui's CV and GitHub profile.</div>
+</footer>
+
+<script>
+  var els = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:0.12});
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+</script>
+</body>
+</html>
